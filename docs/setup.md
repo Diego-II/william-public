@@ -7,13 +7,14 @@ deploying changes → later: Tailscale.
 - Use a **dedicated, disposable number** — a cheap prepaid **SIM** or carrier-grade **eSIM**. **Not**
   your personal number, **not** Google Voice/VoIP (WhatsApp blocks VoIP; voice-OTP + real SIM are
   reliable). Put a normal WhatsApp account on it (on a phone), then link William as a device.
-- A ban (Baileys is unofficial; Meta's Jan-2026 policy targets it) affects **only this number** — group
+- A ban (Baileys is an unofficial client, which WhatsApp's terms do not allow) affects **only this number** — group
   members are safe. Keep it human: allowlist only, no rapid-fire, treat the number as replaceable.
 
 ## 2. Install on the laptop
 - AC power, temporary screen/keyboard attached.
 - Elevated PowerShell: `irm https://raw.githubusercontent.com/Diego-II/william-public/main/install.ps1 | iex`
-  (using a private fork? clone it first and run `.\install.ps1 -RepoUrl <url> -GitHubToken <PAT>`).
+  (using a private fork? clone it first and run `.\install.ps1 -RepoUrl <url> -GitHubToken <PAT>`;
+  the token goes on the command line, so use a short-lived one limited to that repo).
 - After the one reboot, the in-WSL setup prompts for your **Gemini key** + **allowed numbers**, then
   shows the **WhatsApp QR** — scan it from the bot phone (WhatsApp ▸ Linked Devices). Services enable.
 

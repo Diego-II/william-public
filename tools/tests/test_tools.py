@@ -19,13 +19,13 @@ def test_summarize_picks_datetime_then_date():
         "summary": "Sync",
         "start": {"dateTime": "2026-06-10T13:00:00Z"},
         "end": {"date": "2026-06-11"},
-        "attendees": [{"email": "a@x.com"}, {"email": "b@x.com"}],
+        "attendees": [{"email": "a@example.com"}, {"email": "b@example.com"}],
         "htmlLink": "http://e",
     }
     s = gcal_mcp._summarize(item)
     assert s.start == "2026-06-10T13:00:00Z"
     assert s.end == "2026-06-11"
-    assert s.attendees == ["a@x.com", "b@x.com"]
+    assert s.attendees == ["a@example.com", "b@example.com"]
 
 
 def test_extract_text_walks_parts():
@@ -40,9 +40,9 @@ def test_extract_text_walks_parts():
 
 
 def test_raw_roundtrips_headers():
-    raw = gmail_mcp._raw("to@x.com", "Subj", "Body", cc="c@x.com")
+    raw = gmail_mcp._raw("to@example.com", "Subj", "Body", cc="c@example.com")
     decoded = base64.urlsafe_b64decode(raw["raw"]).decode()
-    assert "To: to@x.com" in decoded
+    assert "To: to@example.com" in decoded
     assert "Subject: Subj" in decoded
-    assert "Cc: c@x.com" in decoded
+    assert "Cc: c@example.com" in decoded
     assert "Body" in decoded

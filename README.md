@@ -60,6 +60,8 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
 To install from your own fork, pass `-RepoUrl <url>` (and `-GitHubToken <PAT>` if the fork is private).
+The token is passed on the command line and can end up in your shell history, so use a short-lived
+token limited to that one repository.
 
 Read the script before running it. It changes the machine:
 
@@ -131,9 +133,8 @@ uv run pytest
 
 - Any personal configuration: phone numbers, accounts, API keys, OAuth tokens, backups.
 - Hermes Agent itself. `wsl/setup.sh` installs it from upstream.
-- Continuous deployment. The private setup deploys through a self-hosted GitHub Actions runner; that
-  workflow is left out because a self-hosted runner on a public repository lets anyone who opens a pull
-  request run code on the machine. Do not add one to a public fork.
+- Continuous deployment. Deploying is a manual step here. Do not attach a self-hosted GitHub Actions
+  runner to a public fork: anyone who opens a pull request could then run code on the machine.
 - Remote access. Use something like Tailscale or another private network if you need a shell from
   outside; nothing here opens inbound ports.
 - An official WhatsApp Business API integration.

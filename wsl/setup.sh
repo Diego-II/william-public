@@ -7,7 +7,7 @@
 #   - pairs WhatsApp (interactive QR) and installs/enables the systemd services
 #
 # Hermes-specific config/pairing uses Hermes' own CLI (correct by construction); the
-# exact provider/model keys are validated in the milestone-1 spike.
+# exact provider/model keys still need checking on a first install.
 set -euo pipefail
 
 REPO="${WILLIAM_HOME:-$HOME/william}"
@@ -69,7 +69,7 @@ install_hermes() {
   fi
   export PATH="$HOME/.local/bin:$PATH"
   grep -q '.local/bin' "$HOME/.bashrc" || echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-  hermes --version || warn "hermes installed but --version failed; verify in spike"
+  hermes --version || warn "hermes installed but --version failed; check the install"
 }
 
 # ── 3. uv + Python 3.13 MCP tools ────────────────────────────────────────────
@@ -104,13 +104,13 @@ WHATSAPP_ALLOWED_USERS=${WHATSAPP_ALLOWED_USERS:-}
 EOF
   # Seed config.yaml from our template on first run (kept under version control so
   # changes deploy via scripts/deploy.sh). Verify provider/model/mcp keys against `hermes model`
-  # / `hermes tools` during the spike, then commit any corrections.
+  # / `hermes tools` on a first install, then commit any corrections.
   if [[ ! -f "$HERMES_HOME/config.yaml" ]]; then
     export WILLIAM_HOME="$REPO" GCAL_MCP_PORT GMAIL_MCP_PORT LITELLM_PORT HERMES_PRIMARY_MODEL
     envsubst < "$REPO/config/config.yaml.tmpl" > "$HERMES_HOME/config.yaml"
     warn "Wrote starter ~/.hermes/config.yaml — run 'hermes model' to confirm the provider."
   fi
-  # Seed persona + skills (verify exact injection path with Hermes docs during the spike)
+  # Seed persona + skills (verify exact injection path with the Hermes docs)
   cp -f "$REPO/SOUL.md" "$HERMES_HOME/SOUL.md" 2>/dev/null || true
   mkdir -p "$HERMES_HOME/skills"
   cp -n "$REPO"/skills/*.md "$HERMES_HOME/skills/" 2>/dev/null || true
