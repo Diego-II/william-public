@@ -1,0 +1,18 @@
+[Unit]
+Description=William - LiteLLM proxy (AWS Bedrock as OpenAI-compatible endpoint)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=${LINUX_USER}
+WorkingDirectory=${WILLIAM_HOME}
+EnvironmentFile=${WILLIAM_HOME}/.env
+Environment=PATH=${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=${HOME}/.local/bin/litellm --config ${WILLIAM_HOME}/config/litellm.config.yaml --host 127.0.0.1 --port ${LITELLM_PORT}
+Restart=always
+RestartSec=5
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=William - Google Calendar MCP server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=${LINUX_USER}
+WorkingDirectory=${WILLIAM_HOME}/tools
+EnvironmentFile=${WILLIAM_HOME}/.env
+Environment=PATH=${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=${HOME}/.local/bin/uv run --project ${WILLIAM_HOME}/tools gcal-mcp
+Restart=always
+RestartSec=5
+MemoryMax=256M
+
+[Install]
+WantedBy=multi-user.target

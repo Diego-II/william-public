@@ -1,0 +1,54 @@
+# Secrets — never commit
+.env
+*.env
+!.env.example
+secrets/
+*.pem
+*.key
+*-deploy-key
+google-oauth*.json
+service-account*.json
+
+# Hermes runtime state (lives at ~/.hermes on the server, never in the repo)
+.hermes/
+**/whatsapp/session/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Terraform
+infra/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Logs / backups / local state
+*.log
+logs/
+backups/
+*.tar.gz
+*.db
+*.sqlite
+*.sqlite3
+token*.json
+credentials*.json

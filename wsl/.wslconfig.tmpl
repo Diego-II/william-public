@@ -1,0 +1,6 @@
+# Template for %USERPROFILE%\.wslconfig (Windows host side). install.ps1 writes this with
+# the chosen memory cap. On an 8GB laptop, leave ~2GB for Windows.
+[wsl2]
+memory=6GB
+swap=2GB
+# processors defaults to all cores; the agent + browser are I/O bound so that's fine.

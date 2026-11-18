@@ -1,0 +1,54 @@
+# William's Hermes Agent config — rendered to ~/.hermes/config.yaml by setup.sh (envsubst).
+# This is version-controlled so changes deploy via scripts/deploy.sh. Fields marked (verify) should be
+# confirmed against `hermes model` / `hermes tools` / the Hermes docs during the milestone-1 spike,
+# then corrected here and committed.
+
+# ── Model / provider ─────────────────────────────────────────────────────────
+# Default: Gemini 2.5 Flash-Lite via Google. API key from ~/.hermes/.env.
+# To switch to Bedrock, point the provider at the local LiteLLM proxy (see below) and set
+# model to bedrock-cheap / bedrock-mid.
+model: ${HERMES_PRIMARY_MODEL}          # (verify exact key name with `hermes model`)
+provider: google                        # (verify) google | openai-compatible
+
+providers:                              # (verify structure)
+  google:
+    # api_key read from GEMINI_API_KEY / GOOGLE_API_KEY in ~/.hermes/.env
+    models: [gemini-2.5-flash-lite, gemini-2.5-flash]
+  bedrock:                              # via on-box LiteLLM (OpenAI-compatible)
+    base_url: http://127.0.0.1:${LITELLM_PORT}/v1
+    api_key: ${LITELLM_MASTER_KEY}       # from .env
+    models: [bedrock-cheap, bedrock-mid]
+
+# ── WhatsApp (Baileys bridge) ────────────────────────────────────────────────
+whatsapp:
+  reply_prefix: ""                      # set e.g. "🐙 " to mark bot replies, or leave empty
+  unauthorized_dm_behavior: ignore      # ignore | pair  (allowlist via WHATSAPP_ALLOWED_USERS in .env)
+  extra:
+    text_batch_delay_seconds: 5.0
+    text_batch_split_delay_seconds: 10.0
+
+# ── Safety / approvals ───────────────────────────────────────────────────────
+approvals:
+  mode: smart                           # manual | smart | off
+  cron_mode: deny                       # headless cron must not auto-approve dangerous cmds
+  timeout: 60
+
+security:
+  allow_private_urls: false             # block RFC-1918 access from the browser/tools
+  tirith_enabled: true
+
+# ── Code-execution sandbox ───────────────────────────────────────────────────
+# 'local' runs in the WSL2 sandbox (simplest). Switch to 'docker' if Docker is installed in WSL.
+terminal:
+  backend: local
+
+# ── Tools / MCP servers ──────────────────────────────────────────────────────
+# Built-in browser + web tools stay on. Our custom Calendar/Gmail tools connect over MCP.
+mcp:                                    # (verify key: may be `mcp_servers` / `mcpServers`)
+  servers:
+    calendar:
+      transport: streamable-http
+      url: http://127.0.0.1:${GCAL_MCP_PORT}/mcp
+    gmail:
+      transport: streamable-http
+      url: http://127.0.0.1:${GMAIL_MCP_PORT}/mcp

@@ -1,0 +1,19 @@
+# LiteLLM proxy — exposes AWS Bedrock as an OpenAI-compatible endpoint on 127.0.0.1:$LITELLM_PORT
+# so Hermes can "switch to Bedrock" by pointing a provider at it. AWS creds + region come from
+# the environment (.env): AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION.
+model_list:
+  - model_name: bedrock-cheap          # Amazon Nova Micro — the cheap/fast tier
+    litellm_params:
+      model: bedrock/us.amazon.nova-micro-v1:0
+      aws_region_name: os.environ/AWS_REGION
+  - model_name: bedrock-mid            # Claude Haiku 4.5 — the escalation tier
+    litellm_params:
+      model: bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0
+      aws_region_name: os.environ/AWS_REGION
+
+litellm_settings:
+  drop_params: true                    # tolerate provider-specific params Hermes may send
+  request_timeout: 120
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

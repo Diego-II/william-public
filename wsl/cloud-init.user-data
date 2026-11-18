@@ -1,0 +1,29 @@
+## OPTIONAL alternative to install.ps1's root-bootstrap.
+## Place at %USERPROFILE%\.cloud-init\Ubuntu-24.04.user-data BEFORE first launch to provision
+## the distro unattended (Ubuntu WSL images run cloud-init on first boot). install.ps1 uses a
+## simpler root-bootstrap by default; this file is kept for reference / advanced use.
+#cloud-config
+users:
+  - name: hermes
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    groups: [sudo]
+
+write_files:
+  - path: /etc/wsl.conf
+    content: |
+      [boot]
+      systemd=true
+      [user]
+      default=hermes
+
+package_update: true
+packages:
+  - git
+  - curl
+  - ca-certificates
+  - ripgrep
+  - ffmpeg
+  - build-essential
+  - jq
+  - gettext-base

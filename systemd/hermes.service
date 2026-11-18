@@ -1,0 +1,21 @@
+[Unit]
+Description=William - Hermes Agent gateway (WhatsApp / Baileys)
+After=network-online.target litellm.service gcal-mcp.service gmail-mcp.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=${LINUX_USER}
+WorkingDirectory=${HOME}
+EnvironmentFile=-${HOME}/.hermes/.env
+Environment=PATH=${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=${HOME}/.local/bin/hermes gateway
+Restart=always
+RestartSec=5
+# Guard memory on an 8GB laptop (browser + agent).
+MemoryMax=3G
+# Headless-server hygiene
+NoNewPrivileges=false
+
+[Install]
+WantedBy=multi-user.target
